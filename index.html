@@ -183,8 +183,12 @@ function main() {
 		scene.add(mesh);
 
 
-	  const planeWidth = 21.09375;
-	  const planeHeight = 10.;
+	 // const planeWidth = 21.09375; //with these dimensions the plane will clamp to the edge
+	 // const planeHeight = 10.;
+		
+	  const planeWidth = 10.546875; //with these dimensions the plane will NOT clap to the edge
+	  const planeHeight = 5.; // until the plane gets close enough in 3d space??? then it starts to clamp???
+		
 	  const planeDepth = 1;
 	  const planeGeometry = new THREE.PlaneGeometry(planeWidth, planeHeight, planeDepth);
 
