@@ -98,8 +98,8 @@ const CustomShader = {
 
 
 
-    'position.x += sin(time*0.015 +  position.y*11.) * cos(time*0.08) * 0.05 ;',
-    'position.y += cos(time*0.02 +  position.x*11.) * sin(0.04) * 0.05;',
+    'position.x += sin(time*0.015 +  position.y*11.) * cos(time*0.08) * 0.005 ;',
+    'position.y += cos(time*0.02 +  position.x*11.) * sin(0.04) * 0.005;',
 
 		// 'position.y += cos(time*0.02 +  position.x*11.) * sin(0.04) * 50000.;',
 
