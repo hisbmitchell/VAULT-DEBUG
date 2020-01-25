@@ -3,6 +3,8 @@ const CustomShader = {
 	uniforms: {
 
 		"mainTexture":   { type: "t", value: null},
+		"metalTexture":   { type: "t", value: null},
+
 		"time":       { type: "f", value: 0.0 },
 		"coolValue": { type: "f", value: 0.5 },
 
@@ -48,6 +50,7 @@ const CustomShader = {
 	'uniform float time;',
 	"uniform float coolValue;",
 	"uniform sampler2D mainTexture;",
+	"uniform sampler2D metalTexture;",
 	'varying vec2 vUv;',
 
  'float random (in vec2 st) {',
@@ -86,13 +89,16 @@ const CustomShader = {
           'return result;',
 '  }',
 
+'vec2 mirrored(vec2 v) {',
+    'vec2 m = mod(v, 2.0);',
+    'return mix(m, 2.0 - m, step(1.0, m));',
+'}',
+
 'void main()',
 '{',
 	// sample the source
-		"vec4 cTextureScreen = texture2D( mainTexture, vUv );",
+		"vec4 cTextureScreen = texture2D( metalTexture, vUv );",
 		"vec2 position = vUv;",
-
-		"position = mod(position, vec2(1.));",
 
     // Normalized pixel coordinates (from 0 to 1)
 
@@ -109,19 +115,24 @@ const CustomShader = {
 
     // Time varying pixel color
 
-    'vec3 col = texture2D( mainTexture, vec2(position.x, position.y) ).rgb;',
+    'vec3 col = cTextureScreen.rgb;',
 
 
 		//'vec3 col = vec3(position, 0.);',
 
-
-
     'float fbmResult = fbm(vec2(length(col)*0.05, time * 0.0001))*6.;',
 
     'position += vec2(sin(.006*fbmResult), cos(8.*fbmResult))*cos(time *.003);',
-		//'position.x += vec2(sin(.006*fbmResult), cos(8.*fbmResult))*cos(time *.003);',
+
+		'position = mirrored(position);',
+
 		'col = sin(col + length(col)*1.5 + 100. * 0.001) * -0.49 + 0.6;',
-    'col = texture2D( mainTexture, position ).rgb;',
+		'col = texture2D( mainTexture, position ).rgb;',
+
+		'vec4 metalColor = texture2D(metalTexture, position);',
+		'vec4 camColor = texture2D(mainTexture, vUv);',
+
+		//'col = vec3(position, 1.);',
 		//'col = vec3(position, 0.);',
 
 
@@ -129,7 +140,12 @@ const CustomShader = {
 		//'float red = abs(sin(position.x * position.y + time / 5.0));',
 
     // Output to screen
-  '  gl_FragColor = vec4(col, 1.0);',
+		// use the cam color as a mask to display an inverted metal texture color
+  //'  gl_FragColor = length(camColor) > 0.1 ? 1.-metalColor : metalColor; // vec4(col, 1.0);',
+
+	// Use cam color if it exists
+	'  gl_FragColor = length(camColor) > 0.1 ? camColor : metalColor; // vec4(col, 1.0);',
+
 '}',
 
 

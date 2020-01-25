@@ -6,7 +6,7 @@ import {
 import { Pass } from "../postprocessing/Pass.js";
 import CustomShader from "../shaders/CustomShader.js";
 
-var CustomPass = function ( coolValue ) {
+var CustomPass = function ( coolValue, coolTexture ) {
 
 	Pass.call( this );
 
@@ -16,6 +16,7 @@ var CustomPass = function ( coolValue ) {
 	var shader = CustomShader;
 
 	this.uniforms = UniformsUtils.clone( shader.uniforms );
+	this.uniforms.metalTexture.value = coolTexture
 
 	this.material = new ShaderMaterial( {
 		uniforms: this.uniforms,

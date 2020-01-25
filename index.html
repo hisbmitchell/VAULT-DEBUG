@@ -92,7 +92,6 @@ function main() {
 	var imageTexture = new THREE.TextureLoader().load( 'textures/liquid_chrome.jpg' );
 
 	//imageTexture.wrapS = 	imageTexture.wrapT = THREE.RepeatWrapping;
-//	imageTexture.repeat.set( 3, 3 );
 
 
 
@@ -183,12 +182,12 @@ function main() {
 		scene.add(mesh);
 
 
-	 // const planeWidth = 21.09375; //with these dimensions the plane will clamp to the edge
-	 // const planeHeight = 10.;
-		
-	  const planeWidth = 10.546875; //with these dimensions the plane will NOT clap to the edge
-	  const planeHeight = 5.; // until the plane gets close enough in 3d space??? then it starts to clamp???
-		
+	 const planeWidth = 21.09375; //with these dimensions the plane will clamp to the edge
+	  const planeHeight = 10.;
+
+	  //const planeWidth = 10.546875; //with these dimensions the plane will NOT clap to the edge
+	 // const planeHeight = 5.; // until the plane gets close enough in 3d space??? then it starts to clamp???
+
 	  const planeDepth = 1;
 	  const planeGeometry = new THREE.PlaneGeometry(planeWidth, planeHeight, planeDepth);
 
@@ -199,7 +198,7 @@ function main() {
 	  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 		plane.position.z = -50;
 
-	  scene.add(plane);
+	// scene.add(plane);
 
 
 
@@ -222,7 +221,8 @@ function main() {
 	  );
 
 		const customPass = new CustomPass(
-	      1.   // our cool value
+	      1.,   // our cool value
+				imageTexture
 	  );
 
 		//customPass.uniforms[ "mainTexture" ].value.wrapS = THREE.RepeatWrapping;
@@ -324,7 +324,7 @@ function main() {
 
 
 			customPass.uniforms["time"].value += deltaTime * 10.;
-			console.log(customPass.uniforms["time"].value);
+		//	console.log(customPass.uniforms["time"].value);
 
 
 
